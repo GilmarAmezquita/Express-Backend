@@ -9,8 +9,8 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 const port: number = parseInt(process.env.PORT || "3000");
-;
-//routes(app)
+
+//routes(app);
 
 db.then(() => {
     app.listen(port, () => {

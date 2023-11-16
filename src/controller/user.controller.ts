@@ -3,6 +3,7 @@ import userService from "../services/user.service";
 import UserDocument from "../models/interfaces/user.interface";
 import UserDTO from "../models/dto/user.dto";
 import bcrypt from "bcrypt";
+import groupService from "../services/group.service";
 
 class UserController {
     public async createUser(req: Request, res: Response): Promise<Response> {
@@ -74,6 +75,18 @@ class UserController {
             return res.status(204).json();
         } catch (error) {
             return res.status(500).json("User could not be deleted");
+        }
+    }
+
+    public async listGroupsByUser(req: Request, res: Response): Promise<Response> {
+        try {
+            const groups = await userService.findUserGroups(req.params.id);
+            if (!groups) {
+                return res.status(404).json({ message: "User groups not found" });
+            }
+            return res.status(200).json(groups);
+        } catch (error) {
+            return res.status(500).json("User groups could not be listed");
         }
     }
 

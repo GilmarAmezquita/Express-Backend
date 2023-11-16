@@ -1,7 +1,7 @@
 import {Request, Response, NextFunction} from 'express';
 import jwt from 'jsonwebtoken';
 
-const auth = () => {
+const admin = () => {
     return async (req: Request, res: Response, next: NextFunction) => {
         try {
             let token = req.headers.authorization;
@@ -9,9 +9,13 @@ const auth = () => {
                 return res.status(401).json({message: "Not Authorized"})
             }
             token = token.replace('Bearer ','');
-            const decoded = jwt.verify(token, process.env.JWT_SECRET || "secret");
-            req.body.loggedUser = decoded
-            next()
+            const decoded:any = jwt.verify(token, process.env.JWT_SECRET || "secret");
+            if (!decoded) {
+                return res.status(401).json({message: "Not Authorized"})
+            }
+            if (decoded.role !== "superadmin") {
+                return res.status(401).json({message: "Not Authorized"})
+            }
             return next()
         } catch (error) {
             res.status(500).json(error);
@@ -19,4 +23,4 @@ const auth = () => {
     }
 }
 
-export default auth;
+export default admin;

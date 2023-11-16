@@ -1,4 +1,5 @@
 import UserDTO from "../models/dto/user.dto";
+import GroupDocument from "../models/interfaces/group.interface";
 import UserDocument from "../models/interfaces/user.interface";
 import User from "../models/user.model";
 import jwt  from "jsonwebtoken";
@@ -49,6 +50,16 @@ class UserService {
         }
     }
 
+    public async deleteUserById(id: string): Promise<UserDocument | null> {
+        try {
+            const deletedUser = await User.findById(id);
+            return deletedUser;
+        } catch (error) {
+            throw error;
+        }
+    }
+
+    
     public async addUserToGroup(id: string, groupId: string): Promise<UserDocument | null> {
         try {
             const userUpdated = await User.findOneAndUpdate({_id: id}, {$push: {groups: groupId}}, {new: true});
@@ -67,19 +78,10 @@ class UserService {
         }
     }
 
-    public async findUserGroups(id: string): Promise<UserDocument | null> {
+    public async findUserGroups(id: string): Promise<GroupDocument[] | null> {
         try {
             const user = await User.findById(id).populate("groups");
-            return user;
-        } catch (error) {
-            throw error;
-        }
-    }
-
-    public async deleteUserById(id: string): Promise<UserDocument | null> {
-        try {
-            const deletedUser = await User.findById(id);
-            return deletedUser;
+            return user?.groups as GroupDocument[];
         } catch (error) {
             throw error;
         }

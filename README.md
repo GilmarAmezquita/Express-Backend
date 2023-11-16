@@ -103,3 +103,9 @@ It verify the role of the logged user and give permission to the enpoint if the 
 **3.** [Validate Schema](./src/middleware/validateSchema.middleware.ts):
 
 This middleware is encharge of check the request body and validate that it have the correct params.
+
+## Videos Of The Endpoints In Spanish
+
+[![Video Endpoints Part 1](https://img.youtube.com/vi/nY6hIpzmm1Q/hqdefault.jpg)](https://youtu.be/nY6hIpzmm1Q)
+
+[![Video Endpoints Part 2](https://img.youtube.com/vi/Z3608jgvbz8/hqdefault.jpg)](https://youtu.be/Z3608jgvbz8)

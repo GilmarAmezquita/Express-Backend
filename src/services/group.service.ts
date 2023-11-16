@@ -76,6 +76,14 @@ class GroupService {
         }
     }
 
+    public async removeUserFromAllGroups(userId: string): Promise<void> {
+        try {
+            await Group.updateMany({}, {$pull: {users: userId}});
+        } catch (error) {
+            throw error;
+        }
+    }
+
     public async findUsersOfGroup(name: string): Promise<UserDocument[] | null> {
         try {
             const group = await Group.findOne({name: name}).populate("users");
@@ -85,7 +93,7 @@ class GroupService {
         }
     }
 
-    public async deleteGroup(id: string): Promise<GroupDocument | null> {
+    public async deleteGroupById(id: string): Promise<GroupDocument | null> {
         try {
             const groupDeleted = await Group.findByIdAndDelete(id);
             return groupDeleted;

@@ -52,7 +52,7 @@ class UserService {
 
     public async deleteUserById(id: string): Promise<UserDocument | null> {
         try {
-            const deletedUser = await User.findById(id);
+            const deletedUser = await User.findByIdAndDelete(id);
             return deletedUser;
         } catch (error) {
             throw error;
@@ -73,6 +73,14 @@ class UserService {
         try {
             const userUpdated = await User.findOneAndUpdate({_id: id}, {$pull: {groups: groupId}}, {new: true});
             return userUpdated;
+        } catch (error) {
+            throw error;
+        }
+    }
+
+    public async removeGroupFromAllUsers(groupId: string): Promise<void> {
+        try {
+            await User.updateMany({}, {$pull: {groups: groupId}});
         } catch (error) {
             throw error;
         }

@@ -19,10 +19,26 @@ class GroupController {
 
     public async listAllGroupsInfo(req: Request, res: Response): Promise<Response> {
         try {
-            const groups = await groupService.findAllExtended();
+            if (req.query.all === "true") {
+                const groups = await groupService.findAllExtended();
+                return res.status(200).json(groups);
+            }
+            const groups = await groupService.findAll();
             return res.status(200).json(groups);
         } catch (error) {
             throw res.status(500).json("Groups could not be listed");
+        }
+    }
+
+    public async updateGroup(req: Request, res: Response): Promise<Response> {
+        try {
+            const group = await groupService.updateGroup(req.params.id, req.body as GroupDTO);
+            if (!group) {
+                return res.status(404).json({ message: "Group not found" });
+            }
+            return res.status(200).json(group);
+        } catch (error) {
+            throw res.status(500).json("Group could not be updated");
         }
     }
 
